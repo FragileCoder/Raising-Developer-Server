@@ -3,4 +3,5 @@ include 'core'
 include 'character'
 include 'item'
 include 'inventory'
+include 'store'
 
