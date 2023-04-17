@@ -1,9 +1,12 @@
 package com.developer.service;
 
+import com.developer.domainmodel.CharacterDomain;
 import com.developer.processor.BookFindProcessor;
 import com.developer.processor.CharacterStatProcessor;
 import com.developer.processor.InventoryBookProcessor;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 public class CharacterServiceImpl implements CharacterService{
 
@@ -23,7 +26,7 @@ public class CharacterServiceImpl implements CharacterService{
     public Mono<Boolean> readBook(String characterUUID, String bookUUID) {
         inventoryBookProcessor.checkBook(characterUUID, bookUUID);
         bookFindProcessor.getBook(bookUUID);
-        characterStatProcessor.updateStat(1);
+        characterStatProcessor.updateStat(new CharacterDomain(UUID.randomUUID()),"backend", 3);
         inventoryBookProcessor.consumeBook(characterUUID, bookUUID);
         return Mono.just(Boolean.TRUE);
     }

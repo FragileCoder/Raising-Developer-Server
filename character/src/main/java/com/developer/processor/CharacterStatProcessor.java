@@ -1,5 +1,9 @@
 package com.developer.processor;
 
+import com.developer.domainmodel.CharacterDomain;
+import reactor.core.publisher.Mono;
+
+
 public interface CharacterStatProcessor {
-    void updateStat(int point);
+    Mono<CharacterDomain> updateStat(CharacterDomain character, String targetStat, int point);
 }

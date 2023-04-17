@@ -1,5 +1,6 @@
 package com.developer.service;
 
+import com.developer.domainmodel.CharacterDomain;
 import com.developer.processor.BookFindProcessorImpl;
 import com.developer.processor.CharacterStatProcessorImpl;
 import com.developer.processor.InventoryBookProcessorImpl;
@@ -10,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
@@ -53,7 +56,7 @@ class CharacterServiceTest {
         then(inventoryBookProcessor).should(times(1)).checkBook(anyString(), anyString());
         then(bookFindProcessor).should(times(1)).getBook(anyString());
         then(inventoryBookProcessor).should(times(1)).consumeBook(anyString(), anyString());
-        then(characterStatProcessor).should(times(1)).updateStat(anyInt());
+        then(characterStatProcessor).should(times(1)).updateStat(new CharacterDomain(UUID.randomUUID()), "backend", 3);
         assertThat(result).isInstanceOf(Mono.class); // todo: Mono 검증방법 구상 : chatGPT의 구상은 해당 두줄로 구성
         assertThat(result.block()).isInstanceOf(Boolean.class);
 
