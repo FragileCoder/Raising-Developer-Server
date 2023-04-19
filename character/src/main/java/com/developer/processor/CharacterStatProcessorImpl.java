@@ -14,7 +14,7 @@ public class CharacterStatProcessorImpl implements CharacterStatProcessor{
                     case "ops" -> c.withOps(c.ops() + point);
                     case "health" -> c.withHealth(c.health() + point);
                     case "teamwork" -> c.withTeamwork(c.teamwork() + point);
-                    default -> throw new IllegalArgumentException(targetStat + " Is Not Support Stat");
+                    default -> throw new IllegalArgumentException("Unknown Stat Type");
                 });
     }
 }

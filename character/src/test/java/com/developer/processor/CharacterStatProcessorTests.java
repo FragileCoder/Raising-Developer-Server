@@ -15,7 +15,7 @@ public class CharacterStatProcessorTests {
     private CharacterStatProcessor processor;
 
     @TestFactory
-    Stream<DynamicTest> updateStatTests() {
+    Stream<DynamicTest> updateStatSuccessTests() {
         processor = new CharacterStatProcessorImpl();
         List<List<Object>> values = List.of(
                 List.of(new CharacterDomain(UUID.fromString("11b9649d-0ae3-4175-bf1f-abcfb1047100")), "backend", 10,
@@ -36,6 +36,27 @@ public class CharacterStatProcessorTests {
                         .expectNext((CharacterDomain) value.get(3))
                         .verifyComplete();
             })
+        );
+    }
+    @TestFactory
+    Stream<DynamicTest> updateStatFailTests() {
+        processor = new CharacterStatProcessorImpl();
+        List<List<Object>> values = List.of(
+                List.of(new CharacterDomain(UUID.fromString("11b9649d-0ae3-4175-bf1f-abcfb1047100")), "", 10,
+                        new CharacterDomain(UUID.fromString("11b9649d-0ae3-4175-bf1f-abcfb1047100"),10,0,0,0,0)),
+                List.of(new CharacterDomain(UUID.fromString("21b9649d-0ae3-4175-bf1f-abcfb1047100")), " ", 10,
+                        new CharacterDomain(UUID.fromString("21b9649d-0ae3-4175-bf1f-abcfb1047100"),10,0,0,0,0)),
+                List.of(new CharacterDomain(UUID.fromString("51b9649d-0ae3-4175-bf1f-abcfb1047100")), "unknown", -3,
+                        new CharacterDomain(UUID.fromString("51b9649d-0ae3-4175-bf1f-abcfb1047100"),0,0,0,0,-3))
+        );
+        return values.stream().map(value ->
+                DynamicTest.dynamicTest("CASE: 캐릭터 스텟 업데이트에 실패한다.", () -> {
+                    Mono<CharacterDomain> result = processor.updateStat((CharacterDomain)value.get(0),(String)value.get(1), (int)value.get(2));
+                    StepVerifier.create(result)
+                            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
+                                    && throwable.getMessage().equals("Unknown Stat Type"))
+                            .verify();
+                })
         );
     }
 }
