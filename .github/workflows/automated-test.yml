@@ -20,7 +20,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Gradle 명령 권한을 변경한다.
-        run:
+        run: |
           pwd
           ls -al
           chmod +x gradlew
