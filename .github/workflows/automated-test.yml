@@ -6,7 +6,7 @@ on:
       - feat/automatetest
   pull_request:
     branches:
-      - feat/automatetest
+      - main
 
 permissions:
   checks: write
