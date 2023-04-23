@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - feat/automatetest
+  pull_request:
+    branches:
+      - feat/automatetest
 
 permissions:
   checks: write
