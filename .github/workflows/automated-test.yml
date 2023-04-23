@@ -5,10 +5,6 @@ on:
     branches:
       - feat/automatetest
 
-defaults:
-  run:
-    working-directory: core
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,9 +20,10 @@ jobs:
           distribution: 'temurin'
 
       - name: Gradle 명령 권한을 변경한다.
-        run:  pwd
-              ls -al
-              chmod +x gradlew
+        run:
+          pwd
+          ls -al
+          chmod +x gradlew
 
       - name: Gradle test를 진행한다.
         run: ./gradlew test
