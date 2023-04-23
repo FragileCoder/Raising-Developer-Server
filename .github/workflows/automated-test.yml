@@ -1,0 +1,43 @@
+name: 개발자 키우기 테스트 자동화
+
+on:
+  push:
+    branches:
+      - feat/automatetest
+
+defaults:
+  run:
+    working-directory: core
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository를 clone한다.
+        uses: actions/checkout@v3
+
+      - name: JDK를 설치한다.
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Gradle 명령 권한을 변경한다.
+        run: chmod +x gradlew
+
+      - name: Gradle test를 진행한다.
+        run: ./gradlew test
+
+      - name: 테스트 결과를 PR에 코멘트로 등록한다.
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: '**/build/test-results/test/TEST-*.xml'
+
+      - name: 테스트 실패 시, 실패한 코드 라인에 Check 코멘트를 등록한다.
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          token: ${{ github.token }}
